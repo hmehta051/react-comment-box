@@ -34,7 +34,7 @@ const Comments = () => {
   return (
     <div className="commentBlock">
       <AddComment onChange={handleAddComment} commentConfig={commentConfig} />
-      <SortComment />
+      {!!commentConfig.length && <SortComment />}
       <CommentRenderer
         commentConfig={commentConfig}
         setCommentConfig={setCommentConfig}

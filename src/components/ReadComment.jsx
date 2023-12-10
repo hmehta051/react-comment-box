@@ -1,15 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
 import AddComment from "./AddComment";
 import { COMMENT_STATUS } from "../contants/commentConfig";
-import { commentDataBackUp, formatDateTime } from "../helper";
+import { formatDateTime } from "../helper";
 
 import "../assets/readComment.css";
+import { CommentContext } from "../context/CommentContextProvider";
 
 const ReadComment = (props) => {
   const { data, commentConfig, setCommentConfig } = props;
+  const { handleDelete } = useContext(CommentContext);
   const [canEdit, setCanEdit] = useState(true);
   const [canReply, setCanReply] = useState(false);
   useEffect(() => {
@@ -22,31 +24,6 @@ const ReadComment = (props) => {
 
   const { name, comment, modifiedTime, child } = data || {};
 
-  const deleteComment = (id, commentConfig) => {
-    for (let i = 0; i < commentConfig.length; i++) {
-      if (commentConfig[i].id === id) {
-        delete commentConfig[i].child;
-        commentConfig.splice(i, 1);
-        return true;
-      } else if (
-        Array.isArray(commentConfig[i].child) &&
-        commentConfig[i].child.length > 0
-      ) {
-        const childDeleted = deleteComment(id, commentConfig[i].child);
-        if (childDeleted) return true;
-      }
-    }
-    return false;
-  };
-
-  const handleDelete = () => {
-    const presentID = data.id;
-    const isDeleted = deleteComment(presentID, commentConfig);
-    if (isDeleted) {
-      commentConfig && commentDataBackUp(commentConfig);
-      setCommentConfig([...commentConfig]);
-    }
-  };
   return (
     <div className="readComment">
       {canEdit ? (
@@ -85,7 +62,7 @@ const ReadComment = (props) => {
               cursor: "pointer",
             }}
             size={24}
-            onClick={handleDelete}
+            onClick={() => handleDelete(data)}
           />
         </div>
       )}

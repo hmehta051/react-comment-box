@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../assets/comment.css";
 import { COMMENT_STATUS } from "../contants/commentConfig";
 import { v4 as uuidv4 } from "uuid";
@@ -15,6 +15,8 @@ const AddComment = ({
 }) => {
   const [comment, setComment] = useState("");
   const [name, setName] = useState("");
+  // const { scrollRef } = useContext(CommentContext);
+  const scrollRef = useRef(null);
 
   const disableName = heading == COMMENT_STATUS.EDIT;
   const disablePost = !!comment && !!name;
@@ -28,6 +30,14 @@ const AddComment = ({
       setName(data?.name || "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (performance.navigation.type === 1) {
+      scrollRef.current.scrollIntoView(true);
+    } else {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, []);
 
   const handleSubmit = () => {
@@ -69,7 +79,7 @@ const AddComment = ({
   };
   return (
     <div>
-      <div className="comments">
+      <div className="comments" ref={scrollRef}>
         <section>{heading || "Comment"}</section>
         <div className="new-comment">
           <input
