@@ -1,0 +1,24 @@
+.reply {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f6f6f6;
+  padding: 8px;
+  position: relative;
+}
+.reply-header {
+  width: 100%;
+}
+.reply-header button {
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #0094ff;
+  font-weight: 600;
+  margin: 16px 16px 0px 0px;
+}
+.reply-header > section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
