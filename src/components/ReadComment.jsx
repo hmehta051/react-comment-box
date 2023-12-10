@@ -19,8 +19,14 @@ const ReadComment = (props) => {
     setCanReply(props.isEditing);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const handleEdit = () => setCanEdit(!canEdit);
-  const handleReply = () => setCanReply(!canReply);
+  const handleEdit = () => {
+    setCanReply(false);
+    setCanEdit(!canEdit);
+  };
+  const handleReply = () => {
+    setCanEdit(false);
+    setCanReply(!canReply);
+  };
 
   const { name, comment, modifiedTime, child } = data || {};
 
